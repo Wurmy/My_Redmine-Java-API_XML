@@ -1,6 +1,7 @@
 package org.redmine.ta.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,8 +9,9 @@ import java.util.List;
  * Redmine's Project.
  */
 public class Project implements Identifiable, Serializable {
+	private static final long serialVersionUID = -4461190918125533483L;
 
-    /**
+	/**
      * database ID
      */
     private Integer id;
@@ -32,6 +34,7 @@ public class Project implements Identifiable, Serializable {
 
     private Date updatedOn;
 
+    private List<CustomField> customFields = new ArrayList<CustomField>();
     /**
      * Trackers available for this project
      */
@@ -254,6 +257,29 @@ public class Project implements Identifiable, Serializable {
         }
         return true;
     }
-
+    
+    /**
+     * @return the value or NULL if the field is not found
+     */
+    public String getCustomField(String fieldName) {
+        for (CustomField f : customFields) {
+            if (f.getName().equals(fieldName)) {
+                return f.getValue();
+            }
+        }
+        return null;
+    }
+    /**
+     * list of Custom Field objects, NEVER NULL.
+     */
+    public List<CustomField> getCustomFields() {
+        return customFields;
+    }
+    /**
+     * NOTE: The custom field(s) <b>must have correct database ID set</b> to be saved to Redmine. This is Redmine REST API's limitation.
+     */
+    public void setCustomFields(List<CustomField> customFields) {
+        this.customFields = customFields;
+    }
 
 }
