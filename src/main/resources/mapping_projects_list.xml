@@ -3,75 +3,16 @@
                          "http://castor.org/mapping.dtd">
 <mapping>
 	<description>Redmine XML -> Java API binding. see http://taskadapter.com</description>
-		
-	<class name="org.redmine.ta.beans.CustomFields">
-		<map-to xml="custom_fields"/>
-	
-		<field name="CustomField" type="org.redmine.ta.beans.CustomField" collection="arraylist" set-method="setT" get-method="getT" >
-            <bind-xml name="custom_field"/>
-		</field>
-		
-		<field name="type" type="string">
-			<bind-xml node="attribute" name="type"  />
-		</field>
-		<field name="total_count" type="integer" >
-			<bind-xml node="attribute" name="total_count"  />
-		</field>
-		<field name="offset" type="integer" >
-			<bind-xml node="attribute" name="offset"  />
-		</field>
-		<field name="limit" type="integer" >
-			<bind-xml node="attribute" name="limit"  />
-		</field>
-
-	</class>
-
-
-    <class name="org.redmine.ta.beans.CustomField">
-    	<field name="multiple" type="boolean" >
-			<bind-xml node="attribute" name="multiple"  />
-		</field>
-        <field name="id" type="integer">
-            <bind-xml name="id" node="attribute"/>
-        </field>
-        <field name="name" type="string">
-            <bind-xml name="name" node="attribute"/>
-        </field>
-        <field name="value" type="string">
-            <bind-xml node="element"/>
-        </field>
-        <field name="values" type="string" collection="arraylist">
-            <bind-xml node="element" location="value"/>
-        </field>
-    </class>
-
-	<class name="org.redmine.ta.beans.BeanBoxList">
-		<map-to xml="projects" />
-
-		<field name="Project" type="org.redmine.ta.beans.Project" collection="arraylist" set-method="setT" get-method="getT">
-			<bind-xml name="project" />
-		</field>
-
-		<field name="type" type="string">
-			<bind-xml node="attribute" name="type" />
-		</field>
-		<field name="total_count" type="integer">
-			<bind-xml node="attribute" name="total_count" />
-		</field>
-		<field name="offset" type="integer">
-			<bind-xml node="attribute" name="offset" />
-		</field>
-		<field name="limit" type="integer">
-			<bind-xml node="attribute" name="limit" />
-		</field>
-	</class>
-
 
 	<class name="org.redmine.ta.beans.Project">
-		<map-to xml="project" />
-
+		<map-to xml="project"/>
+	
 		<field name="id" type="integer">
 			<bind-xml name="id" node="element" />
+		</field>
+		<!--  <parent name="project1310699218389" id="20"/>  -->
+		<field name="parentId" type="integer">
+			<bind-xml location="parent" node="attribute" name="id"/>
 		</field>
 		<field name="name" type="string">
 			<bind-xml name="name" node="element" />
@@ -82,22 +23,11 @@
 		<field name="description" type="string">
 			<bind-xml name="description" node="element" />
 		</field>
-		
-		<!-- single request only -->
 		<field name="homepage" type="string">
 			<bind-xml name="homepage" node="element" />
 		</field>
-
-		<field name="parentName" type="string">
-			<bind-xml name="name" node="attribute" location="parent"/>
-		</field>
-		<!-- <parent name="project1310699218389" id="20"/> -->
-		<field name="parentId" type="integer">
-			<bind-xml name="id" node="attribute" location="parent"/>
-		</field>
-
-		<field name="customFields" type="org.redmine.ta.beans.CustomFields" collection="arraylist">
-			<bind-xml name="custom_fields" node="element" />
+		<field name="customFields" type="org.redmine.ta.beans.CustomField" collection="arraylist" >
+            <bind-xml name="custom_field" location="custom_fields"/>
 		</field>
 		<field name="createdOn" type="string" handler="org.redmine.ta.internal.RedmineLongDateHandler">
 			<bind-xml name="created_on" node="element" />
@@ -105,25 +35,26 @@
 		<field name="updatedOn" type="string" handler="org.redmine.ta.internal.RedmineLongDateHandler">
 			<bind-xml name="updated_on" node="element" />
 		</field>
-
-		<!-- NOTE: transient="true" means that this field will be IGNORED during 
-			Marshalling operation. This is required to avoid bug http://www.redmine.org/issues/7085 
-			: "create project" with empty trackers list gives "NoMethodError (undefined 
-			method `each' for nil:NilClass)" -->
-		<field name="trackers" type="org.redmine.ta.beans.Tracker"	container="false" collection="arraylist">
-			<bind-xml name="trackers" transient="true" />
+		
+		<!--
+		    NOTE: transient="true" means that this field will be IGNORED during Marshalling operation.
+			This is required to avoid bug http://www.redmine.org/issues/7085 :
+			"create project" with empty trackers list gives "NoMethodError (undefined method `each' for nil:NilClass)"
+		 -->
+ 		<field name="trackers" type="org.redmine.ta.beans.Tracker" container="false" collection="arraylist"
+ 		       >
+			<bind-xml name="trackers" transient="true"/>
 		</field>
-
 	</class>
-
+	
 	<class name="org.redmine.ta.beans.Tracker">
-		<map-to xml="tracker" />
-		<field name="id" type="integer">
-			<bind-xml name="id" node="attribute" />
-		</field>
-		<field name="name" type="string">
-			<bind-xml name="name" node="attribute" />
-		</field>
-	</class>
+        <map-to xml="tracker"/>
+        <field name="id" type="integer" >
+            <bind-xml name="id" node="attribute"/>
+        </field>
+        <field name="name" type="string" >
+            <bind-xml name="name" node="attribute"/>
+        </field>
+    </class>
 
 </mapping>
