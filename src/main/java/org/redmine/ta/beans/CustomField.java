@@ -1,5 +1,7 @@
 package org.redmine.ta.beans;
 
+import java.util.ArrayList;
+
 /**
  * Redmine custom field
  *
@@ -8,8 +10,11 @@ package org.redmine.ta.beans;
 public class CustomField {
 
     private int id;
+    private boolean multiple = false;
     private String name;
+    
     private String value;
+    private ArrayList<String> values;
 
     /**
      * This default empty constructor is required for Castor XML library.
@@ -47,7 +52,35 @@ public class CustomField {
         this.value = value;
     }
 
-    @Override
+	/**
+	 * @return the values
+	 */
+	public ArrayList<String> getValues() {
+		return values;
+	}
+
+	/**
+	 * @param values the values to set
+	 */
+	public void setValues(ArrayList<String> values) {
+		this.values = values;
+	}
+
+	/**
+	 * @return the multiple
+	 */
+	public boolean isMultiple() {
+		return multiple;
+	}
+
+	/**
+	 * @param multiple the multiple to set
+	 */
+	public void setMultiple(boolean multiple) {
+		this.multiple = multiple;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o)
             return true;

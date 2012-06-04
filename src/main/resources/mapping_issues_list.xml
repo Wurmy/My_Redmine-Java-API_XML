@@ -3,9 +3,72 @@
                          "http://castor.org/mapping.dtd">
 <mapping>
 	<description>Redmine XML -> Java API binding. see http://taskadapter.com</description>
+	
+	<class name="org.redmine.ta.beans.CustomFields">
+		<map-to xml="custom_fields"/>
+	
+		<field name="CustomField" type="org.redmine.ta.beans.CustomField" collection="arraylist" set-method="setT" get-method="getT" >
+            <bind-xml name="custom_field"/>
+		</field>
+		
+		<field name="type" type="string">
+			<bind-xml node="attribute" name="type"  />
+		</field>
+		<field name="total_count" type="integer" >
+			<bind-xml node="attribute" name="total_count"  />
+		</field>
+		<field name="offset" type="integer" >
+			<bind-xml node="attribute" name="offset"  />
+		</field>
+		<field name="limit" type="integer" >
+			<bind-xml node="attribute" name="limit"  />
+		</field>
+
+	</class>
+
+
+    <class name="org.redmine.ta.beans.CustomField">
+    	<field name="multiple" type="boolean" >
+			<bind-xml node="attribute" name="multiple"  />
+		</field>
+        <field name="id" type="integer">
+            <bind-xml name="id" node="attribute"/>
+        </field>
+        <field name="name" type="string">
+            <bind-xml name="name" node="attribute"/>
+        </field>
+        
+        <field name="value" type="string">
+            <bind-xml node="element"/>
+        </field>
+        <field name="values" type="string" collection="arraylist">
+            <bind-xml node="element" location="value"/>
+        </field>
+    </class>
+	
+	<class name="org.redmine.ta.beans.BeanBoxList">
+		<map-to xml="issues"/>
+	
+		<field name="Issue" type="org.redmine.ta.beans.Issue" collection="arraylist" set-method="setT" get-method="getT" >
+            <bind-xml name="issue"/>
+		</field>
+		
+		<field name="type" type="string">
+			<bind-xml node="attribute" name="type"  />
+		</field>
+		<field name="total_count" type="integer" >
+			<bind-xml node="attribute" name="total_count"  />
+		</field>
+		<field name="offset" type="integer" >
+			<bind-xml node="attribute" name="offset"  />
+		</field>
+		<field name="limit" type="integer" >
+			<bind-xml node="attribute" name="limit"  />
+		</field>
+	</class>
 
 	<class name="org.redmine.ta.beans.Issue">
-		<map-to xml="issue"/>
+		<map-to xml="issue" />
 
 		<field name="id" type="integer">
 			<bind-xml name="id" node="element" />
@@ -63,19 +126,19 @@
 			<bind-xml name="updated_on" node="element" />
 		</field>
 		<field name="statusId" type="integer">
-			<bind-xml location="status" node="attribute" name="id" />
+			<bind-xml node="attribute" name="id" location="status" />
 		</field>
 		<field name="statusName" type="string">
-			<bind-xml location="status" node="attribute" name="name" />
+			<bind-xml node="attribute" name="name" location="status" />
 		</field>
-        <field name="customFields" type="org.redmine.ta.beans.CustomField" collection="arraylist" >
-            <bind-xml name="custom_field" location="custom_fields"/>
+		<field name="customFields" type="org.redmine.ta.beans.CustomFields" collection="arraylist">
+			<bind-xml name="custom_fields" node="element" />
 		</field>
         <field name="journals" type="org.redmine.ta.beans.Journal" collection="arraylist" >
             <bind-xml name="journal" location="journals"/>
         </field>
         <field name="relations" type="org.redmine.ta.beans.IssueRelation" collection="arraylist" >
-            <bind-xml name="relation" location="relations"/>
+            <bind-xml name="type" location="relations"/>
 		</field>
         <field name="attachments" type="org.redmine.ta.beans.Attachment" collection="arraylist" >
             <bind-xml name="attachment" location="attachments"/>
@@ -127,17 +190,7 @@
 		</field>
 	</class>
 
-    <class name="org.redmine.ta.beans.CustomField">
-        <field name="id" type="integer">
-            <bind-xml name="id" node="attribute"/>
-        </field>
-        <field name="name" type="string">
-            <bind-xml name="name" node="attribute"/>
-        </field>
-        <field name="value" type="string">
-            <bind-xml node="element"/>
-        </field>
-    </class>
+
 	
     <class name="org.redmine.ta.beans.Journal">
         <field name="id" type="integer">
